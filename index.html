@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Avocado Bar - Fresh & Healthy</title>
+    <script src="cordova.js"></script>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(180deg, #1e3a1e 0%, #0d1f0d 100%);
+            --card-bg: #2d4a2d;
+            --card-border: #4a7c4a;
+            --accent-gold: #f4d03f;
+            --avo-green: #588157;
+            --text-light: #f4f6f0;
+            --primary-red: #e63946;
+            --success-green: #38b000;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            margin: 0;
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            user-select: none;
+            min-height: 100vh;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--accent-gold);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            text-shadow: 0 3px 6px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        .header-stats {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 16px;
+            padding: 10px 14px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .stat-box { text-align: center; }
+        .stat-label { font-size: 0.7rem; color: #a3b18a; text-transform: uppercase; font-weight: 700; }
+        .stat-value { font-size: 1.2rem; font-weight: 900; color: var(--accent-gold); }
+
+        .game-card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+
+        /* Character & Customer Zone */
+        .character-zone {
+            width: 100%;
+            max-width: 480px;
+            background: radial-gradient(circle, #3a5a40 0%, #1e3a1e 100%);
+            border: 2px solid var(--accent-gold);
+            border-radius: 18px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        .customer-avatar {
+            font-size: 3rem;
+            background: rgba(255,255,255,0.1);
+            padding: 6px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-gold);
+        }
+
+        .speech-bubble {
+            flex: 1;
+            background: #ffffff;
+            color: #111;
+            padding: 10px 12px;
+            border-radius: 14px;
+            position: relative;
+            font-weight: 800;
+        }
+
+        .customer-name { font-size: 0.75rem; color: #588157; text-transform: uppercase; margin-bottom: 2px; }
+        .order-name { font-size: 1rem; color: #111; }
+
+        .section-label {
+            font-size: 0.8rem;
+            color: #a3b18a;
+            margin-bottom: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .plate-area {
+            min-height: 65px;
+            border: 2px dashed var(--accent-gold);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px;
+            margin-bottom: 12px;
+            background-color: #132a13;
+            flex-wrap: wrap;
+        }
+
+        .ingredient-chip {
+            background-color: #3a5a40;
+            border: 1px solid var(--accent-gold);
+            color: var(--text-light);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        .grid-ingredients {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .btn-ingredient {
+            background: linear-gradient(145deg, #3a5a40, #2d4a2d);
+            color: #fff;
+            border: 1.5px solid #588157;
+            padding: 12px 4px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        .btn-ingredient:active { transform: scale(0.95); }
+
+        .action-buttons { display: flex; gap: 8px; }
+        
+        .btn-action {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 900;
+            font-size: 0.95rem;
+            cursor: pointer;
+            color: white;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+        }
+
+        .btn-serve { background-color: var(--success-green); }
+        .btn-clear { background-color: var(--primary-red); }
+
+        .message-box {
+            text-align: center;
+            font-weight: 900;
+            height: 22px;
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        .success { color: #38b000; }
+        .error { color: #ff4d4d; }
+    </style>
+</head>
+<body>
+
+    <div class="header-title">🥑 AVOCADO BAR 🥑</div>
+
+    <div class="header-stats">
+        <div class="stat-box">
+            <div class="stat-label">Score</div>
+            <div class="stat-value" id="score">0</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Combo</div>
+            <div class="stat-value" id="combo" style="color: #38b000;">x1</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Customer</div>
+            <div class="stat-value" id="customer">#1</div>
+        </div>
+        <div class="stat-box">
+            <div class="stat-label">Time</div>
+            <div class="stat-value" id="timer" style="color: var(--primary-red);">60s</div>
+        </div>
+    </div>
+
+    <div class="character-zone">
+        <div class="customer-avatar" id="customer-avatar">🧘‍♀️</div>
+        <div class="speech-bubble">
+            <div class="customer-name" id="customer-type">Fitness Enthusiast</div>
+            <div class="order-name">I'd like an <strong id="target-recipe-name" style="color:#2d4a2d;">Loading...</strong></div>
+            <div id="target-ingredients" style="margin-top: 4px; display:flex; gap:4px; flex-wrap:wrap;"></div>
+        </div>
+    </div>
+
+    <div class="game-card">
+        <div class="section-label">Preparation Board:</div>
+        <div class="plate-area" id="plate">
+            <span style="color: #a3b18a; font-size: 0.8rem;">Tap ingredients to prepare dish...</span>
+        </div>
+
+        <div class="section-label">Fresh Bar Ingredients:</div>
+        <div class="grid-ingredients">
+            <button class="btn-ingredient" onclick="addIngredient('Avocado')">🥑 Avocado</button>
+            <button class="btn-ingredient" onclick="addIngredient('Sourdough Bread')">🍞 Toast</button>
+            <button class="btn-ingredient" onclick="addIngredient('Poached Egg')">🍳 Egg</button>
+            <button class="btn-ingredient" onclick="addIngredient('Cherry Tomatoes')">🍅 Tomato</button>
+            <button class="btn-ingredient" onclick="addIngredient('Salmon')">🐟 Salmon</button>
+            <button class="btn-ingredient" onclick="addIngredient('Lime Juice')">🍋 Lime</button>
+            <button class="btn-ingredient" onclick="addIngredient('Olive Oil')">🫒 Olive Oil</button>
+            <button class="btn-ingredient" onclick="addIngredient('Chili Flakes')">🌶️ Chili</button>
+            <button class="btn-ingredient" onclick="addIngredient('Spinach')">🥬 Spinach</button>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-action btn-clear" onclick="clearPlate()">Clear Dish</button>
+            <button class="btn-action btn-serve" onclick="serveOrder()">Serve Order</button>
+        </div>
+
+        <div class="message-box" id="message"></div>
+    </div>
+
+    <script>
+        const customers = [
+            { type: "Fitness Enthusiast", avatar: "🧘‍♀️" },
+            { type: "Vegan Blogger", avatar: "📸" },
+            { type: "Gym Trainer", avatar: "🏋️‍♂️" },
+            { type: "Nutritionist", avatar: "🥗" },
+            { type: "Tech Developer", avatar: "👨‍💻" }
+        ];
+
+        const recipes = [
+            { name: "Classic Avocado Toast", ingredients: ["Sourdough Bread", "Avocado", "Olive Oil"] },
+            { name: "Avocado & Egg Deluxe", ingredients: ["Sourdough Bread", "Avocado", "Poached Egg", "Chili Flakes"] },
+            { name: "Guacamole Special", ingredients: ["Avocado", "Cherry Tomatoes", "Lime Juice", "Chili Flakes"] },
+            { name: "Salmon Avo Bowl", ingredients: ["Avocado", "Salmon", "Spinach", "Lime Juice"] },
+            { name: "Ultimate Green Feast", ingredients: ["Sourdough Bread", "Avocado", "Salmon", "Poached Egg", "Olive Oil"] }
+        ];
+
+        let currentRecipe = {};
+        let currentCustomer = {};
+        let currentPlate = [];
+        let score = 0;
+        let combo = 1;
+        let customerCount = 1;
+        let timeLeft = 60;
+        let timerInterval;
+
+        function startGame() {
+            score = 0;
+            combo = 1;
+            customerCount = 1;
+            timeLeft = 60;
+            updateStats();
+            nextOrder();
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = timeLeft + "s";
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("⏰ Shift Ended Master Chef!\nFinal Score: " + score + " Pts\nTotal Customers Served: " + (customerCount - 1));
+                    startGame();
+                }
+            }, 1000);
+        }
+
+        function updateStats() {
+            document.getElementById('score').innerText = score;
+            document.getElementById('combo').innerText = "x" + combo;
+            document.getElementById('customer').innerText = "#" + customerCount;
+        }
+
+        function nextOrder() {
+            currentCustomer = customers[Math.floor(Math.random() * customers.length)];
+            currentRecipe = recipes[Math.floor(Math.random() * recipes.length)];
+
+            document.getElementById('customer-avatar').innerText = currentCustomer.avatar;
+            document.getElementById('customer-type').innerText = currentCustomer.type;
+            document.getElementById('target-recipe-name').innerText = currentRecipe.name;
+            
+            const targetDiv = document.getElementById('target-ingredients');
+            targetDiv.innerHTML = '';
+            currentRecipe.ingredients.forEach(ing => {
+                const chip = document.createElement('span');
+                chip.className = 'ingredient-chip';
+                chip.innerText = ing;
+                targetDiv.appendChild(chip);
+            });
+            clearPlate();
+        }
+
+        function addIngredient(ing) {
+            currentPlate.push(ing);
+            renderPlate();
+        }
+
+        function clearPlate() {
+            currentPlate = [];
+            renderPlate();
+        }
+
+        function renderPlate() {
+            const plateDiv = document.getElementById('plate');
+            plateDiv.innerHTML = '';
+            if(currentPlate.length === 0) {
+                plateDiv.innerHTML = '<span style="color: #a3b18a; font-size: 0.8rem;">Tap ingredients to prepare dish...</span>';
+                return;
+            }
+            currentPlate.forEach(ing => {
+                const chip = document.createElement('span');
+                chip.className = 'ingredient-chip';
+                chip.innerText = ing;
+                plateDiv.appendChild(chip);
+            });
+        }
+
+        function serveOrder() {
+            const msgBox = document.getElementById('message');
+            const isCorrect = currentPlate.length === currentRecipe.ingredients.length &&
+                              currentPlate.every((val, index) => val === currentRecipe.ingredients[index]);
+
+            if (isCorrect) {
+                const pointsEarned = 25 * combo;
+                score += pointsEarned;
+                combo++;
+                msgBox.className = "message-box success";
+                msgBox.innerText = "+" + pointsEarned + " Pts! Perfect Healthy Meal!";
+                customerCount++;
+                updateStats();
+                setTimeout(() => {
+                    msgBox.innerText = "";
+                    nextOrder();
+                }, 1000);
+            } else {
+                score = Math.max(0, score - 5);
+                combo = 1;
+                msgBox.className = "message-box error";
+                msgBox.innerText = "-5 Pts! Wrong Recipe!";
+                updateStats();
+            }
+        }
+
+        window.onload = startGame;
+    </script>
+</body>
+</html>

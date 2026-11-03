@@ -35,8 +35,8 @@ jobs:
         rm -rf www/*
         cp -r ../index.html www/
         cp -r ../avocado-bg.jpg www/avocado-bg.jpg || true
+        cp -r ../chef.jpg www/chef.jpg || true
         
-        # İkon kopyalama ve config.xml güncelleme
         if [ -f "../icon.png" ]; then
           cp ../icon.png www/icon.png
           sed -i '/<\/widget>/i \    <icon src="www/icon.png" />' config.xml
@@ -49,3 +49,4 @@ jobs:
       with:
         name: AvocadoBar-Android-APK
         path: avocadoApp/platforms/android/app/build/outputs/apk/debug/app-debug.apk
+

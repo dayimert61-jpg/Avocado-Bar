@@ -34,7 +34,14 @@ jobs:
         cordova platform add android
         rm -rf www/*
         cp -r ../index.html www/
-        cp -r ../avocado-bg.jpg www/ || true
+        cp -r ../avocado-bg.jpg www/avocado-bg.jpg || true
+        
+        # İkon kopyalama ve config.xml güncelleme
+        if [ -f "../icon.png" ]; then
+          cp ../icon.png www/icon.png
+          sed -i '/<\/widget>/i \    <icon src="www/icon.png" />' config.xml
+        fi
+
         cordova build android --no-telemetry
 
     - name: Upload APK

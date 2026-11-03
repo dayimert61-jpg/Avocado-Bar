@@ -34,6 +34,7 @@ jobs:
         cordova platform add android
         rm -rf www/*
         cp -r ../index.html www/
+        cp -r ../avocado-bg.jpg www/ || true
         cordova build android --no-telemetry
 
     - name: Upload APK
